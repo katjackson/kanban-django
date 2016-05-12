@@ -5,6 +5,7 @@ from board import views
 
 router = routers.DefaultRouter()
 router.register(r'tasks', views.TasksViewSet)
+router.register(r'users', views.UsersViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
