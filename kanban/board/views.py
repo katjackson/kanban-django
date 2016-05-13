@@ -13,7 +13,7 @@ class TasksViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
 
 
-class UsersViewSet(viewsets.ModelViewSet):
+class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
@@ -27,19 +27,45 @@ class TaskListView(generics.ListCreateAPIView):
         return Response({'tasks': queryset})
 
 
-class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'task_detail.html'
+class TaskDetail(APIView):
+    # renderer_classes = [TemplateHTMLRenderer]
+    # template_name = 'task_detail.html'
 
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         serializer = TaskSerializer(task, context={'request': request})
         return Response({'serializer': serializer, 'task': task})
 
-    def post(self, request, pk):
+    def put(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
-        serializer = TaskSerializer(task, data=request.data, context={'request': request})
+        serializer = TaskSerializer(task, context={'request': request})
         if not serializer.is_valid():
             return Response({'serializer': serializer, 'task': task})
         task.save()
         return redirect('task_list')
+
+
+
+# class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
+#     renderer_classes = [TemplateHTMLRenderer]
+#     template_name = 'task_detail.html'
+#     queryset = Task.objects.all()
+#     serializer_class = TaskSerializer
+#
+    # def get(self, request, pk):
+    #     task = get_object_or_404(Task, pk=pk)
+    #     serializer = TaskSerializer(task, context={'request': request})
+    #     return Response({'serializer': serializer, 'task': task})
+    #
+    # def post(self, request, pk):
+    #     task = get_object_or_404(Task, pk=pk)
+    #     serializer = TaskSerializer(task, data=request.data, context={'request': request})
+    #     if not serializer.is_valid():
+    #         return Response({'serializer': serializer, 'task': task})
+    #     task.save()
+    #     return redirect('task_list')
+
+    # def put(self, request, pk):
+    #     task = get_object_or_404(Task, pk=pk)
+    #     serializer = TaskSerializer(task, context={'request': request})
+    #     return self.update(request, pk=pk)

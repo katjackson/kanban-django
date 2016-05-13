@@ -9,7 +9,7 @@
 
     <h1>Task - {{ task.title }}</h1>
 
-    <form action="{% url 'task_detail' pk=task.pk %}" method="POST">
+    <form action="{% url 'task_detail' pk=task.id %}" method="PUT">
         {% csrf_token %}
         {% render_form serializer template_pack='rest_framework/vertical' %}
         <input type="submit" value="Save">

@@ -10,7 +10,11 @@ class Task(models.Model):
     priority = models.IntegerField(choices=priority_choices, default=2)
     description = models.TextField(max_length=1250)
     created = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey('auth.User', related_name='tasks')
+    owner = models.ForeignKey(User, related_name='tasks', null=True, blank=True)
 
     class Meta:
         ordering = ('status', 'priority', 'created')
+
+
+    def __str__(self):
+        return self.title
