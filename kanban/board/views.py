@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from .serializers import TaskSerializer, UserSerializer
 from .models import Task
+from .forms import TaskForm
 
 
 class TasksViewSet(viewsets.ModelViewSet):
@@ -18,6 +19,12 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
+def index_view(request):
+    tasks = Task.objects.filter(owner=request.user)
+    form = TaskForm()
+    return render(request, 'index.html', {'tasks': tasks, 'form': form})
+
+
 class TaskListView(generics.ListCreateAPIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'task_list.html'
@@ -28,21 +35,23 @@ class TaskListView(generics.ListCreateAPIView):
 
 
 class TaskDetail(APIView):
-    # renderer_classes = [TemplateHTMLRenderer]
-    # template_name = 'task_detail.html'
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'task_detail.html'
 
     def get(self, request, pk):
         task = get_object_or_404(Task, pk=pk)
         serializer = TaskSerializer(task, context={'request': request})
-        return Response({'serializer': serializer, 'task': task})
+        api_location = "http://127.0.0.1:8000/api/tasks/{}/".format(pk)
+        return Response({'serializer': serializer, 'task': task,
+                        'api_location': api_location})
 
-    def put(self, request, pk):
-        task = get_object_or_404(Task, pk=pk)
-        serializer = TaskSerializer(task, context={'request': request})
-        if not serializer.is_valid():
-            return Response({'serializer': serializer, 'task': task})
-        task.save()
-        return redirect('task_list')
+    # def put(self, request, pk):
+    #     task = get_object_or_404(Task, pk=pk)
+    #     serializer = TaskSerializer(task, context={'request': request})
+    #     if not serializer.is_valid():
+    #         return Response({'serializer': serializer, 'task': task})
+    #     task.save()
+    #     return redirect('task_list')
 
 
 
