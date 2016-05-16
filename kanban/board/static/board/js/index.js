@@ -37,7 +37,72 @@ var $api = 'http://127.0.0.1:8000/api/';
 var appendTask = function (task) {
     var $li = $('<li>');
     $li.text(task.title);
-    $li[0].value = task.id
+    $li[0].value = task.id;
+
+    $('<br>').appendTo($li);
+
+    var $form = $('<form class="hidden_form">');
+        var $legend = $('<legend>');
+        $legend.text('Edit this task');
+        $legend.appendTo($form);
+
+        $("<p>")
+            .append(
+                $('<label for="id_title">').text("Title:"),
+                $('<input value="' + task.title + '" id="id_title" maxlength="150" name="title" type="text">')
+            )
+            .appendTo($form);
+
+        $("<p>")
+            .append(
+                $('<label for="id_status">').text("Status:"),
+                $('<select id="id_status" name="status">')
+                    .append(
+                        $('<option value="1">').text("Backlog"),
+                        $('<option value="2">').text("Ready"),
+                        $('<option value="3">').text("In Progress"),
+                        $('<option value="4">').text("Complete")
+                    )
+            )
+            .appendTo($form);
+
+        $("<p>")
+            .append(
+                $('<label for="id_priority">').text("Priority:"),
+                $('<select id="id_priority" name="priority">')
+                    .append(
+                        $('<option value="1">').text("High"),
+                        $('<option value="2">').text("Moderate"),
+                        $('<option value="3">').text("Low")
+                    )
+            )
+            .appendTo($form);
+
+            $("<p>")
+                .append(
+                    $('<label for="id_description">').text("Description:"),
+                    $('<textarea cols="40" id="id_description" maxlength="1250" name="description" rows="10">').text(task.description)
+                )
+                .appendTo($form);
+
+            $("<p>")
+                .append(
+                    $('<label for="id_owner">').text("Owner:"),
+                    $('<select id="id_owner" name="owner">')
+                        .append(
+                            $('<option value>').text("---------"),
+                            $('<option value="1">').text("kathrynjackson")
+                        )
+                )
+                .appendTo($form);
+
+            $('<input type="submit" value="Save">').appendTo($form);
+    $form.appendTo($li);
+
+    $form.find("#id_status > option[value='" + task.status + "']").attr("selected", "selected");
+    $form.find("#id_priority > option[value='" + task.priority + "']").attr("selected", "selected");
+    $form.find("#id_owner > option[value='" + task.owner + "']").attr("selected", "selected");
+
 
     var $button = $('<button class="edit">');
     $button.text('Edit');
@@ -67,13 +132,52 @@ var deleteInit = function () {
     });
 };
 
+var submitEditForm = function($edit_form, id) {
+    // var $edit_form = $('#hidden_form');
+    $edit_form.title = $edit_form.find('input[name="title"]');
+    $edit_form.status = $edit_form.find('select[name="status"]');
+    $edit_form.priority = $edit_form.find('select[name="priority"]');
+    $edit_form.description = $edit_form.find('textarea[name="description"]');
+    $edit_form.owner = $edit_form.find('select[name="owner"]');
+
+    console.log('things are happening');
+
+    var $edit_form_data = {
+        title: $edit_form.title.val(),
+        status: $edit_form.status.val(),
+        priority: $edit_form.priority.val(),
+        description: $edit_form.description.val(),
+        owner: 'http://127.0.0.1:8000/api/users/' + $edit_form.owner.val() + '/',
+    };
+
+    $.ajax({
+        url: $api + 'tasks/' + id + '/',
+        method: "PUT",
+        data: $edit_form_data,
+        success: function() {
+            // appendTask($edit_form_data);
+            // buttonInit();
+            console.log('i think it worked!');
+        }
+    });
+
+    return false;
+};
+
+
 var editInit = function () {
     $(".edit").on("click", function () {
         console.log("i clicked edit");
-        var $li = event.target.closest('li')
-        console.log($li.value);
+        var $li = event.target.closest('li');
+        console.log($li.value, $li);
 
-        
+        $form = $(' li[value=' + $li.value + '] > form ');
+        $form.show();
+        $form.submit(function(event) {
+            event.preventDefault();
+            submitEditForm($form, $li.value);
+            $form.hide();
+        })
     });
 };
 
