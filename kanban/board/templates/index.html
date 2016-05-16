@@ -5,19 +5,20 @@
         <meta charset="utf-8">
         <title>Kanban Board</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="/static/board/css/task.css">
-        <link rel="stylesheet" type="text/css" href="/static/board/css/board.css">
+        <link rel="stylesheet" type="text/css" href="/static/board/css/index.css">
     </head>
     <body>
-        {% for task in tasks %}
-            <p>{{task}}</p>
-            <button class="edit_button" type="button" name="button">Edit</button>
-            <form class="task_form" action="index.html" method="put">
-                {% csrf_token %}
-                {{form.as_p}}
-            </form>
-        {% endfor %}
+        <ul id="tasks">
+
+        </ul>
+
+        <form id="new_task_form" action="" method="post">
+            <legend>Create a new task</legend>
+            {{form.as_p}}
+            <input type="submit" value="Save">
+        </form>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="/static/board/js/board.js"></script>
+        <script src="/static/board/js/index.js"></script>
     </body>
 </html>
