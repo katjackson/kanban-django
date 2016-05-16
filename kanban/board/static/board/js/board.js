@@ -1,7 +1,7 @@
 
-$(".edit_button").click(function() {
-    $(".task_form").show("slow");
-});
+// $(".edit_button").click(function() {
+//     $(".task_form").show("slow");
+// });
 
 
 function getCookie(name) {
