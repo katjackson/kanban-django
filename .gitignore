@@ -5,3 +5,4 @@
 __pycache__
 /data
 secrets.py
+/failed_files_for_remembering
