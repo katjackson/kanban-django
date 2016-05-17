@@ -16,7 +16,7 @@ import os
 SECRET_KEY = ')+vj%5fw6oq0m7*-6u$h)z+yt5sr^84z0$qlrz^39%xvbac0dv'
 
 
-DATABASES = {}
+DATABASES = {'default': {}}
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
