@@ -33,6 +33,7 @@ $.ajaxSetup({
 // my page stuff //
 var $tasks = $('#tasks')
 var $api = 'http://127.0.0.1:8000/api/';
+var $user = $('input[name="user"]').val()
 
 var appendTask = function (task) {
     var $li = $('<li>');

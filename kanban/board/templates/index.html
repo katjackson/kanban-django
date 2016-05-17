@@ -7,7 +7,9 @@
         <link rel="stylesheet" type="text/css" href="/static/board/css/index.css">
     </head>
     <body>
+        <p>You are logged in as {{user}}</p>
         <h1>Your KANBAN Board</h1>
+        <input type="hidden" name="user" value={{user.id}}>
         <ul id="tasks">
 
         </ul>
