@@ -32,7 +32,7 @@ $.ajaxSetup({
 
 // my page stuff //
 var $tasks = $('#tasks')
-var $api = 'http://fathomless-wildwood-43598.herokuapp.com/api/';
+var $api = 'https://fathomless-wildwood-43598.herokuapp.com/api/';
 var $user = $('input[name="user"]').val()
 
 var appendTask = function (task) {
