@@ -32,8 +32,8 @@ $.ajaxSetup({
 
 // my page stuff //
 var $tasks = $('#tasks')
-var $api = 'https://fathomless-wildwood-43598.herokuapp.com/api/';
-var $user = $('input[name="user"]').val()
+var $api = '/api/';
+var $userID = $('input[name="user"]').val()
 
 var appendTask = function (task) {
     var $li = $('<li>');
@@ -86,17 +86,6 @@ var appendTask = function (task) {
                 )
                 .appendTo($form);
 
-            $("<p>")
-                .append(
-                    $('<label for="id_owner">').text("Owner:"),
-                    $('<select id="id_owner" name="owner">')
-                        .append(
-                            $('<option value>').text("---------"),
-                            $('<option value="1">').text("kathrynjackson")
-                        )
-                )
-                .appendTo($form);
-
             $('<input type="submit" value="Save">').appendTo($form);
     $form.appendTo($li);
 
@@ -139,7 +128,6 @@ var submitEditForm = function($edit_form, id) {
     $edit_form.status = $edit_form.find('select[name="status"]');
     $edit_form.priority = $edit_form.find('select[name="priority"]');
     $edit_form.description = $edit_form.find('textarea[name="description"]');
-    $edit_form.owner = $edit_form.find('select[name="owner"]');
 
     console.log('things are happening');
 
@@ -148,7 +136,7 @@ var submitEditForm = function($edit_form, id) {
         status: $edit_form.status.val(),
         priority: $edit_form.priority.val(),
         description: $edit_form.description.val(),
-        owner: 'http://127.0.0.1:8000/api/users/' + $edit_form.owner.val() + '/',
+        owner: $api + 'users/' + $userID + '/',
     };
 
     $.ajax({
@@ -189,7 +177,7 @@ var buttonInit = function () {
 
 function print_list() {
     $.ajax({
-        url: $api + 'tasks/',
+        url: $api + 'tasks/?owner=' + $userID,
         type: 'GET',
         success: function(tasks) {
             tasks.results.forEach(appendTask);
@@ -216,7 +204,7 @@ $new_task.submit(function() {
         status: $new_task.status.val(),
         priority: $new_task.priority.val(),
         description: $new_task.description.val(),
-        owner: 'http://127.0.0.1:8000/api/users/' + $new_task.owner.val() + '/',
+        owner: $api + 'users/' + $userID + '/',
     };
 
     $.ajax({
