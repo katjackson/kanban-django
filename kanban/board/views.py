@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from rest_framework import viewsets
 from django.shortcuts import render
@@ -31,6 +32,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
+@login_required
 def index_view(request):
     user = request.user
     form = TaskForm()

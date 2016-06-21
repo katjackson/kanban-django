@@ -15,7 +15,7 @@ import os
 # from .secrets import *
 
 SECRET_KEY = ')+vj%5fw6oq0m7*-6u$h)z+yt5sr^84z0$qlrz^39%xvbac0dv'
-
+LOGIN_URL = '/login/'
 
 DATABASES = {'default': {}}
 
