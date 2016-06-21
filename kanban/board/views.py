@@ -9,8 +9,21 @@ from .forms import TaskForm
 
 
 class TasksViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
+    queryset = Task.objects.all().order_by('priority')
     serializer_class = TaskSerializer
+
+    def get_queryset(self):
+        queryset = Task.objects.all().order_by('priority')
+        owner = self.request.query_params.get('owner', None)
+        status = self.request.query_params.get('status', None)
+        priority = self.request.query_params.get('priority', None)
+        if owner:
+            queryset = queryset.filter(owner=User.objects.get(id=owner))
+        if status:
+            queryset = queryset.filter(status=status)
+        if priority:
+            queryset = queryset.filter(priority=priority)
+        return queryset
 
 
 class UsersViewSet(viewsets.ReadOnlyModelViewSet):
