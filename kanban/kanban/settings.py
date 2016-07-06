@@ -19,8 +19,8 @@ LOGIN_URL = '/login/'
 
 DATABASES = {'default': {}}
 
-db_from_env = dj_database_url.parse(os.environ.get('KANBAN_DATABASE_URL'),
-                                    conn_max_age=500)
+db_from_env = dj_database_url.config('KANBAN_DATABASE_URL',
+                                     conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 
