@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from rest_framework import viewsets
 from django.shortcuts import render
@@ -32,17 +33,20 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
-@login_required
 def index_view(request):
     user = request.user
     form = TaskForm()
     return render(request, 'index.html', {'user': user, 'form': form})
 
+
 def register(request):
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
         if user_form.is_valid():
-            new_user = user_form.save()
+            user_form.save()
+            u = authenticate(username=request.POST['username'], password=request.POST['password1'])
+            login(request, u)
+
             return HttpResponseRedirect("/board/")
         else:
             print(user_form.errors)
