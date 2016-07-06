@@ -22,9 +22,6 @@
             <input type="submit" value="Save">
         </form>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="/static/board/js/index.js"></script>
-    </body>
 
     {% else %}
     <body>
@@ -32,6 +29,9 @@
         <p>
             Please <a href="{% url 'register' %}">register</a> or <a href="/login/">log in</a> to start adding tasks to your list.
         </p>
-    </body>
+
     {% endif %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script src="/static/board/js/index.js"></script>
+    </body>
 </html>

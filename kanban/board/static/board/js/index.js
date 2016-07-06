@@ -211,8 +211,8 @@ $new_task.submit(function() {
         url: $api + 'tasks/',
         method: "POST",
         data: $new_task_data,
-        success: function() {
-            appendTask($new_task_data);
+        success: function(response) {
+            appendTask(response);
             buttonInit();
             console.log('i think it worked!');
             $new_task[0].reset();
